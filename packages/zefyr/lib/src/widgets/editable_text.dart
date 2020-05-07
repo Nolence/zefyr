@@ -22,7 +22,6 @@ import 'scope.dart';
 import 'selection.dart';
 import 'theme.dart';
 
-
 /// Core widget responsible for editing Zefyr documents.
 ///
 /// Depends on presence of [ZefyrTheme] and [ZefyrScope] somewhere up the
@@ -135,10 +134,12 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   }
 
   TextSelectionControls defaultSelectionControls(BuildContext context) {
-    TargetPlatform platform = Theme.of(context).platform;
+    final platform = Theme.of(context).platform;
+
     if (platform == TargetPlatform.iOS) {
       return cupertinoTextSelectionControls;
     }
+
     return materialTextSelectionControls;
   }
 

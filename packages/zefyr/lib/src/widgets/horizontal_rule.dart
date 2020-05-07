@@ -53,7 +53,8 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   List<ui.TextBox> getEndpointsForSelection(TextSelection selection) {
-    TextSelection local = getLocalSelection(selection);
+    final local = getLocalSelection(selection);
+
     if (local.isCollapsed) {
       final dx = local.extentOffset == 0 ? 0.0 : size.width;
       return [
@@ -64,7 +65,12 @@ class RenderHorizontalRule extends RenderEditableBox {
     return [
       ui.TextBox.fromLTRBD(0.0, 0.0, 0.0, size.height, TextDirection.ltr),
       ui.TextBox.fromLTRBD(
-          size.width, 0.0, size.width, size.height, TextDirection.ltr),
+        size.width,
+        0.0,
+        size.width,
+        size.height,
+        TextDirection.ltr,
+      ),
     ];
   }
 
@@ -83,11 +89,12 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   TextPosition getPositionForOffset(Offset offset) {
-    int position = _node.documentOffset;
+    var position = _node.documentOffset;
 
     if (offset.dx > size.width / 2) {
       position++;
     }
+
     return TextPosition(offset: position);
   }
 
@@ -103,8 +110,9 @@ class RenderHorizontalRule extends RenderEditableBox {
     final localSelection = getLocalSelection(selection);
     assert(localSelection != null);
     if (!localSelection.isCollapsed) {
-      final Paint paint = Paint()..color = selectionColor;
+      final paint = Paint()..color = selectionColor;
       final rect = Rect.fromLTWH(0.0, 0.0, size.width, _kHeight);
+
       context.canvas.drawRect(rect.shift(offset), paint);
     }
   }
@@ -112,10 +120,12 @@ class RenderHorizontalRule extends RenderEditableBox {
   @override
   Offset getOffsetForCaret(ui.TextPosition position, ui.Rect caretPrototype) {
     final pos = position.offset - node.documentOffset;
-    Offset caretOffset = Offset.zero;
+    var caretOffset = Offset.zero;
+
     if (pos == 1) {
       caretOffset = caretOffset + Offset(size.width - 1.0, 0.0);
     }
+
     return caretOffset;
   }
 }

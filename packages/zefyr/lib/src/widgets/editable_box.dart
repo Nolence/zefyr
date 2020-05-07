@@ -1,12 +1,12 @@
 // Copyright (c) 2018, the Zefyr project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notus/notus.dart';
+import 'package:zefyr/src/widgets/rich_text.dart';
 
 import 'caret.dart';
 import 'render_context.dart';
@@ -94,6 +94,7 @@ class RenderEditableProxyBox extends RenderBox
 
   bool _isDirty = true;
 
+  @override
   ContainerNode node;
 
   LayerLink get layerLink => _layerLink;
@@ -158,9 +159,9 @@ class RenderEditableProxyBox extends RenderBox
     }
     if (!_selection.isCollapsed) return false;
 
-    final int start = node.documentOffset;
-    final int end = start + node.length;
-    final int caretOffset = _selection.extentOffset;
+    final start = node.documentOffset;
+    final end = start + node.length;
+    final caretOffset = _selection.extentOffset;
     return caretOffset >= start && caretOffset < end;
   }
 
@@ -230,8 +231,11 @@ class RenderEditableProxyBox extends RenderBox
   }
 
   void _paintCursor(PaintingContext context, Offset offset) {
-    Offset caretOffset =
-        getOffsetForCaret(_selection.extent, _cursorPainter.prototype);
+    final caretOffset = getOffsetForCaret(
+      _selection.extent,
+      _cursorPainter.prototype,
+    );
+
     _cursorPainter.paint(context.canvas, caretOffset + offset);
   }
 
@@ -270,6 +274,7 @@ class RenderEditableProxyBox extends RenderBox
   TextSelection getLocalSelection(TextSelection documentSelection) =>
       child.getLocalSelection(documentSelection);
 
+  @override
   bool intersectsWithSelection(TextSelection selection) =>
       child.intersectsWithSelection(selection);
 
@@ -327,15 +332,17 @@ abstract class RenderEditableBox extends RenderBox {
   TextSelection getLocalSelection(TextSelection documentSelection) {
     if (!intersectsWithSelection(documentSelection)) return null;
 
-    int nodeBase = node.documentOffset;
-    int nodeExtent = nodeBase + node.length;
+    final nodeBase = node.documentOffset;
+    final nodeExtent = nodeBase + node.length;
+
     return getSelectionRebase(nodeBase, nodeExtent, documentSelection);
   }
 
   /// Returns `true` if this box intersects with document [selection].
   bool intersectsWithSelection(TextSelection selection) {
-    final int base = node.documentOffset;
-    final int extent = base + node.length;
+    final base = node.documentOffset;
+    final extent = base + node.length;
+
     return selectionIntersectsWith(base, extent, selection);
   }
 }

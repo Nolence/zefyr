@@ -33,7 +33,8 @@ class ZefyrController extends ChangeNotifier {
 
   /// Zefyr document managed by this controller.
   NotusDocument get document => _document;
-  NotusDocument _document;
+
+  final NotusDocument _document;
 
   /// Currently selected text within the [document].
   TextSelection get selection => _selection;
@@ -53,15 +54,19 @@ class ZefyrController extends ChangeNotifier {
   /// Updates selection with specified [value].
   ///
   /// [value] and [source] cannot be `null`.
-  void updateSelection(TextSelection value,
-      {ChangeSource source = ChangeSource.remote}) {
+  void updateSelection(
+    TextSelection value, {
+    ChangeSource source = ChangeSource.remote,
+  }) {
     _updateSelectionSilent(value, source: source);
     notifyListeners();
   }
 
   // Updates selection without triggering notifications to listeners.
-  void _updateSelectionSilent(TextSelection value,
-      {ChangeSource source = ChangeSource.remote}) {
+  void _updateSelectionSilent(
+    TextSelection value, {
+    ChangeSource source = ChangeSource.remote,
+  }) {
     assert(value != null && source != null);
     _selection = value;
     _lastChangeSource = source;
@@ -81,8 +86,11 @@ class ZefyrController extends ChangeNotifier {
   /// can be composed without errors.
   ///
   /// If composing this change fails then this method throws [ComposeError].
-  void compose(Delta change,
-      {TextSelection selection, ChangeSource source = ChangeSource.remote}) {
+  void compose(
+    Delta change, {
+    TextSelection selection,
+    ChangeSource source = ChangeSource.remote,
+  }) {
     if (change.isNotEmpty) {
       _document.compose(change, source);
     }
@@ -114,8 +122,12 @@ class ZefyrController extends ChangeNotifier {
   /// in any cases as we don't want to keep it except on inserts.
   ///
   /// Optionally updates selection if provided.
-  void replaceText(int index, int length, String text,
-      {TextSelection selection}) {
+  void replaceText(
+    int index,
+    int length,
+    String text, {
+    TextSelection selection,
+  }) {
     Delta delta;
 
     if (length > 0 || text.isNotEmpty) {
@@ -128,7 +140,7 @@ class ZefyrController extends ChangeNotifier {
           delta.length <= 2 &&
           delta.last.isInsert) {
         // Apply it.
-        Delta retainDelta = Delta()
+        final retainDelta = Delta()
           ..retain(index)
           ..retain(text.length, toggledStyles.toJson());
         document.compose(retainDelta, ChangeSource.local);
@@ -144,11 +156,11 @@ class ZefyrController extends ChangeNotifier {
       } else {
         // need to transform selection position in case actual delta
         // is different from user's version (in deletes and inserts).
-        Delta user = Delta()
+        final user = Delta()
           ..retain(index)
           ..insert(text)
           ..delete(length);
-        int positionDelta = getPositionDelta(user, delta);
+        final positionDelta = getPositionDelta(user, delta);
         _updateSelectionSilent(
           selection.copyWith(
             baseOffset: selection.baseOffset + positionDelta,
@@ -188,8 +200,9 @@ class ZefyrController extends ChangeNotifier {
 
   /// Formats current selection with [attribute].
   void formatSelection(NotusAttribute attribute) {
-    int index = _selection.start;
-    int length = _selection.end - index;
+    final index = _selection.start;
+    final length = _selection.end - index;
+
     formatText(index, length, attribute);
   }
 
@@ -198,8 +211,8 @@ class ZefyrController extends ChangeNotifier {
   /// If nothing is selected but we've toggled an attribute,
   ///  we also merge those in our style before returning.
   NotusStyle getSelectionStyle() {
-    int start = _selection.start;
-    int length = _selection.end - start;
+    final start = _selection.start;
+    final length = _selection.end - start;
     var lineStyle = _document.collectStyle(start, length);
 
     lineStyle = lineStyle.mergeAll(toggledStyles);

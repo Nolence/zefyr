@@ -431,10 +431,12 @@ class _LinkButtonState extends State<LinkButton> {
     final toolbar = ZefyrToolbar.of(context);
     final style = toolbar.editor.selectionStyle;
 
-    String value = 'Tap to edit link';
+    var value = 'Tap to edit link';
+
     if (style.contains(NotusAttribute.link)) {
       value = style.value(NotusAttribute.link);
     }
+
     final clipboardEnabled = value != 'Tap to edit link';
     final body = !isEditing
         ? _LinkView(value: value, onTap: edit)
@@ -527,7 +529,8 @@ class _LinkInputState extends State<_LinkInput> {
     final toolbarTheme = ZefyrTheme.of(context).toolbarTheme;
     final color =
         widget.formatError ? Colors.redAccent : toolbarTheme.iconColor;
-    final style = theme.textTheme.subhead.copyWith(color: color);
+    final style = theme.textTheme.subtitle2.copyWith(color: color);
+
     return TextField(
       style: style,
       keyboardType: TextInputType.url,
@@ -567,7 +570,7 @@ class _LinkView extends StatelessWidget {
               value,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.subhead
+              style: theme.textTheme.subtitle1
                   .copyWith(color: toolbarTheme.disabledIconColor),
             ),
           )

@@ -6,18 +6,23 @@ import 'dart:math' as math;
 /// Performs a fast diff operation on two input strings based on provided
 /// [cursorPosition].
 DiffResult fastDiff(String oldText, String newText, int cursorPosition) {
-  var delta = newText.length - oldText.length;
-  var limit = math.max(0, cursorPosition - delta);
+  final delta = newText.length - oldText.length;
+  final limit = math.max(0, cursorPosition - delta);
   var end = oldText.length;
+
   while (end > limit && oldText[end - 1] == newText[end + delta - 1]) {
     end -= 1;
   }
+
   var start = 0;
-  var startLimit = cursorPosition - math.max(0, delta);
+  final startLimit = cursorPosition - math.max(0, delta);
+
   while (start < startLimit && oldText[start] == newText[start]) {
     start += 1;
   }
-  final String deleted = (start < end) ? oldText.substring(start, end) : '';
+
+  final deleted = (start < end) ? oldText.substring(start, end) : '';
+
   final inserted = newText.substring(start, end + delta);
   return DiffResult(start, deleted, inserted);
 }
@@ -33,7 +38,7 @@ class DiffResult {
   /// Inserted text.
   final String inserted;
 
-  DiffResult(this.start, this.deleted, this.inserted);
+  const DiffResult(this.start, this.deleted, this.inserted);
 
   @override
   String toString() => 'DiffResult[$start, "$deleted", "$inserted"]';

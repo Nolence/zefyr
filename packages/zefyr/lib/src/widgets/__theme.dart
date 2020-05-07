@@ -42,11 +42,14 @@ class ZefyrTheme extends InheritedWidget {
   /// and [nullOk] is set to `true`. If [nullOk] is set to `false` (default)
   /// then this method asserts.
   static ZefyrThemeData of(BuildContext context, {bool nullOk = false}) {
-    final ZefyrTheme widget =
-        context.dependOnInheritedWidgetOfExactType<ZefyrTheme>();
+    final widget = context.dependOnInheritedWidgetOfExactType<ZefyrTheme>();
     if (widget == null && nullOk) return null;
-    assert(widget != null,
-        '$ZefyrTheme.of() called with a context that does not contain a ZefyrEditor.');
+
+    assert(
+      widget != null,
+      '$ZefyrTheme.of() called with a context that does not contain a ZefyrEditor.',
+    );
+
     return widget.data;
   }
 }
@@ -67,7 +70,7 @@ class ZefyrThemeData {
   final ZefyrToolbarTheme toolbarTheme;
 
   factory ZefyrThemeData.fallback(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
+    final themeData = Theme.of(context);
     final defaultStyle = DefaultTextStyle.of(context);
     final paragraphStyle = defaultStyle.style.copyWith(
       fontSize: 16.0,
@@ -77,7 +80,9 @@ class ZefyrThemeData {
     final boldStyle = TextStyle(fontWeight: FontWeight.bold);
     final italicStyle = TextStyle(fontStyle: FontStyle.italic);
     final linkStyle = TextStyle(
-        color: themeData.accentColor, decoration: TextDecoration.underline);
+      color: themeData.accentColor,
+      decoration: TextDecoration.underline,
+    );
 
     return ZefyrThemeData(
       boldStyle: boldStyle,
@@ -234,6 +239,8 @@ class BlockTheme {
         fontFamily = 'Menlo';
         break;
       case TargetPlatform.android:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
       case TargetPlatform.fuchsia:
         fontFamily = 'Roboto Mono';
         break;

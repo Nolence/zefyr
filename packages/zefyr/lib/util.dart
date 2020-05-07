@@ -14,13 +14,17 @@ export 'src/fast_diff.dart';
 int getPositionDelta(Delta user, Delta actual) {
   final userIter = DeltaIterator(user);
   final actualIter = DeltaIterator(actual);
-  int diff = 0;
+  var diff = 0;
+
   while (userIter.hasNext || actualIter.hasNext) {
-    num length = math.min(userIter.peekLength(), actualIter.peekLength());
+    var length = math.min(userIter.peekLength(), actualIter.peekLength());
     final userOp = userIter.next(length);
     final actualOp = actualIter.next(length);
+
     assert(userOp.length == actualOp.length);
+
     if (userOp.key == actualOp.key) continue;
+
     if (userOp.isInsert && actualOp.isRetain) {
       diff -= userOp.length;
     } else if (userOp.isDelete && actualOp.isRetain) {
@@ -36,5 +40,6 @@ int getPositionDelta(Delta user, Delta actual) {
       // TODO: this likely needs to cover more edge cases.
     }
   }
+
   return diff;
 }

@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:async';
-import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
@@ -115,14 +114,15 @@ class RenderEditableImage extends RenderBox
   TextSelection getLocalSelection(TextSelection documentSelection) {
     if (!intersectsWithSelection(documentSelection)) return null;
 
-    int nodeBase = node.documentOffset;
-    int nodeExtent = nodeBase + node.length;
+    final nodeBase = node.documentOffset;
+    final nodeExtent = nodeBase + node.length;
+
     return getSelectionRebase(nodeBase, nodeExtent, documentSelection);
   }
 
   @override
   List<ui.TextBox> getEndpointsForSelection(TextSelection selection) {
-    TextSelection local = getLocalSelection(selection);
+    final local = getLocalSelection(selection);
     if (local.isCollapsed) {
       final dx = local.extentOffset == 0 ? _childOffset.dx : size.width;
       return [
@@ -141,7 +141,7 @@ class RenderEditableImage extends RenderBox
 
   @override
   TextPosition getPositionForOffset(Offset offset) {
-    int position = node.documentOffset;
+    var position = node.documentOffset;
 
     if (offset.dx > size.width / 2) {
       position++;
@@ -157,15 +157,16 @@ class RenderEditableImage extends RenderBox
 
   @override
   bool intersectsWithSelection(TextSelection selection) {
-    final int base = node.documentOffset;
-    final int extent = base + node.length;
+    final base = node.documentOffset;
+    final extent = base + node.length;
     return selectionIntersectsWith(base, extent, selection);
   }
 
   @override
   Offset getOffsetForCaret(TextPosition position, Rect caretPrototype) {
     final pos = position.offset - node.documentOffset;
-    Offset caretOffset = _childOffset - Offset(kHorizontalPadding, 0.0);
+    var caretOffset = _childOffset - Offset(kHorizontalPadding, 0.0);
+
     if (pos == 1) {
       caretOffset =
           caretOffset + Offset(_lastChildSize.width + kHorizontalPadding, 0.0);
@@ -179,7 +180,7 @@ class RenderEditableImage extends RenderBox
     final localSelection = getLocalSelection(selection);
     assert(localSelection != null);
     if (!localSelection.isCollapsed) {
-      final Paint paint = Paint()
+      final paint = Paint()
         ..color = selectionColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.0;
@@ -189,6 +190,7 @@ class RenderEditableImage extends RenderBox
     }
   }
 
+  @override
   void paint(PaintingContext context, Offset offset) {
     super.paint(context, offset + _childOffset);
   }

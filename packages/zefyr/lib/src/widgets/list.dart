@@ -17,8 +17,9 @@ class ZefyrList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
-    List<Widget> items = [];
-    int index = 1;
+    final items = <Widget>[];
+    var index = 1;
+
     for (var line in node.children) {
       items.add(_buildItem(line, index));
       index++;
