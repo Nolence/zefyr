@@ -61,7 +61,7 @@ void main() {
     });
 
     test('it notifies on selection changes but not text changes', () {
-      bool notified = false;
+      var notified = false;
       scope.addListener(() {
         notified = true;
       });

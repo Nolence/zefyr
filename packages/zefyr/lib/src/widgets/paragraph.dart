@@ -42,7 +42,7 @@ class ZefyrHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = themeOf(node, context);
-    TextStyle style = theme.textStyle;
+    var style = theme.textStyle;
     if (blockStyle != null) {
       style = style.merge(blockStyle);
     }

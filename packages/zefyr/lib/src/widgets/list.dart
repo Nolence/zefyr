@@ -27,7 +27,7 @@ class ZefyrList extends StatelessWidget {
 
     final isNumberList =
         node.style.get(NotusAttribute.block) == NotusAttribute.block.numberList;
-    EdgeInsets padding = isNumberList
+    var padding = isNumberList
         ? theme.attributeTheme.numberList.padding
         : theme.attributeTheme.bulletList.padding;
     padding = padding.copyWith(left: theme.indentWidth);
